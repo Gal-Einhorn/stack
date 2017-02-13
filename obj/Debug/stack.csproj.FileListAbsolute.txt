@@ -1,0 +1,5 @@
+C:\Users\gal\documents\visual studio 2015\Projects\app\stack\bin\Debug\stack.exe.config
+C:\Users\gal\documents\visual studio 2015\Projects\app\stack\bin\Debug\stack.exe
+C:\Users\gal\documents\visual studio 2015\Projects\app\stack\bin\Debug\stack.pdb
+C:\Users\gal\documents\visual studio 2015\Projects\app\stack\obj\Debug\stack.exe
+C:\Users\gal\documents\visual studio 2015\Projects\app\stack\obj\Debug\stack.pdb
