@@ -11,40 +11,47 @@ namespace stack
     {
         static void Main(string[] args)
         {
-            var stack = new LinkedList<string>();   
-            UserInterface(stack);
+            var stack = new LinkedList<string>();
+            var state = new State {state = true};
+            UserInterface(stack,state);
         }
 
-        static void UserInterface(LinkedList<string> stack)
+        static void UserInterface(LinkedList<string> stack, State state)
         {
             Actions action;
-            Console.WriteLine("\nThe stack is:\n");
-            foreach (var item in stack)
+            while (state.state == true)
             {
-                Console.WriteLine(item);
-            }
-            Console.WriteLine("\nTo pop type 1, to push type 2, to exit type 3");
-            
-            var userChoise = Console.ReadLine();
-            if (Enum.TryParse(userChoise, out action) && Enum.IsDefined(typeof(Actions), action))
-            {
-                switch (action)
+                Console.WriteLine("\n\nThe stack is:");
+                foreach (var item in stack)
                 {
-                    case Actions.Pop:
-                        Pop(stack);
-                        break;
-                    case Actions.Push:
-                        Add(stack);
-                        break;
-                    case Actions.Exit:
-                        Environment.Exit(0);
-                        break;
+                    Console.WriteLine(item);
                 }
-            }
-            else
-            {
-                Console.WriteLine("\nYou typed {0} - which is neither '1' nor '2'", userChoise);
-                UserInterface(stack);
+                Console.WriteLine("Please pick one of the following options:");
+                for (int i = 1; i <= Enum.GetNames(typeof (Actions)).Length; i++)
+                {
+                    Console.WriteLine("{0}. {1}",i, Enum.GetName(typeof(Actions),i));
+                }
+
+                var userChoise = Console.ReadLine();
+                if (Enum.TryParse(userChoise, out action) && Enum.IsDefined(typeof(Actions), action))
+                {
+                    switch (action)
+                    {
+                        case Actions.Pop:
+                            Pop(stack);
+                            break;
+                        case Actions.Push:
+                            Add(stack);
+                            break;
+                        case Actions.Peek:
+                            Peek(stack);
+                            break;
+                        case Actions.Exit:
+                            Environment.Exit(0);
+                            state.state = false;
+                            break;
+                    }
+                }
             }
         }
 
@@ -53,12 +60,15 @@ namespace stack
             Console.WriteLine("\nType the string you woyld like to add to the stack");
             var stringToAdd = Console.ReadLine();
             stack.AddLast(stringToAdd);
-            UserInterface(stack);
         }
         static void Pop(LinkedList<string> stack)
         {
             stack.RemoveLast();
-            UserInterface(stack);
+        }
+        static void Peek(LinkedList<string> stack)
+        {
+            Console.WriteLine("\n\nThe last item in the stack is:");
+            Console.WriteLine(stack.Last.Value);
         }
     }
 
@@ -66,6 +76,12 @@ namespace stack
     {
         Pop = 1,
         Push = 2,
-        Exit = 3
+        Peek = 3,
+        Exit = 4
+    }
+
+    public class State
+    {
+        public bool state { get; set; }
     }
 }
