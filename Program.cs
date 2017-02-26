@@ -12,7 +12,7 @@ namespace stack
         static void Main(string[] args)
         {
             var stack = new LinkedList<string>();
-            var state = new State {state = true};
+            var state = new State {state = true, empty=true};
             UserInterface(stack,state);
         }
 
@@ -38,13 +38,13 @@ namespace stack
                     switch (action)
                     {
                         case Actions.Pop:
-                            Pop(stack);
+                            Pop(stack, state);
                             break;
                         case Actions.Push:
-                            Add(stack);
+                            Push(stack, state);
                             break;
                         case Actions.Peek:
-                            Peek(stack);
+                            Peek(stack, state);
                             break;
                         case Actions.Exit:
                             Environment.Exit(0);
@@ -55,20 +55,39 @@ namespace stack
             }
         }
 
-        static void Add(LinkedList<string> stack)
+        static void Push(LinkedList<string> stack, State state)
         {
             Console.WriteLine("\nType the string you woyld like to add to the stack");
             var stringToAdd = Console.ReadLine();
             stack.AddLast(stringToAdd);
+            state.empty = false;
         }
-        static void Pop(LinkedList<string> stack)
+        static void Pop(LinkedList<string> stack, State state)
         {
-            stack.RemoveLast();
+            if (state.empty == true)
+            {
+                Console.WriteLine("\nThe stack is empty - there's no item to pop");
+            }
+            else
+            {
+                stack.RemoveLast();
+                if (stack.Count == 0)
+                {
+                    state.empty = true;
+                }
+            } 
         }
-        static void Peek(LinkedList<string> stack)
+        static void Peek(LinkedList<string> stack, State state)
         {
-            Console.WriteLine("\n\nThe last item in the stack is:");
-            Console.WriteLine(stack.Last.Value);
+            if (state.empty == true)
+            {
+                Console.WriteLine("\nThe stack is empty - there's no item to pop");
+            }
+            else
+            {
+                Console.WriteLine("\n\nThe last item in the stack is:");
+                Console.WriteLine(stack.Last.Value);
+            }
         }
     }
 
@@ -80,8 +99,9 @@ namespace stack
         Exit = 4
     }
 
-    public class State
+    internal class State
     {
-        public bool state { get; set; }
+        internal bool state { get; set; }
+        internal bool empty { get; set; }
     }
 }
