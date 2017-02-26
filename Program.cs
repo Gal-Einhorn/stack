@@ -38,13 +38,20 @@ namespace stack
                     switch (action)
                     {
                         case Actions.Pop:
-                            Pop(stack, state);
+                            if (!VerifyIfStackEmpty(stack, state))
+                            {
+                                Pop(stack, state);
+                            }
                             break;
                         case Actions.Push:
                             Push(stack, state);
                             break;
                         case Actions.Peek:
-                            Peek(stack, state);
+                            if (!VerifyIfStackEmpty(stack, state))
+                            {
+                                Peek(stack);
+                            }
+                            
                             break;
                         case Actions.Exit:
                             Environment.Exit(0);
@@ -64,32 +71,31 @@ namespace stack
         }
         static void Pop(LinkedList<string> stack, State state)
         {
-            if (state.empty == true)
-            {
-                Console.WriteLine("\nThe stack is empty - there's no item to pop");
-            }
-            else
-            {
                 stack.RemoveLast();
                 if (stack.Count == 0)
                 {
                     state.empty = true;
                 }
-            } 
         }
-        static void Peek(LinkedList<string> stack, State state)
+        static void Peek(LinkedList<string> stack)
         {
+                Console.WriteLine("\n\nThe last item in the stack is:");
+                Console.WriteLine(stack.Last.Value);
+        }
+
+        static bool VerifyIfStackEmpty(LinkedList<string> stack, State state)
+        {
+            var flag = false;
             if (state.empty == true)
             {
                 Console.WriteLine("\nThe stack is empty - there's no item to pop");
+                flag = true;
             }
-            else
-            {
-                Console.WriteLine("\n\nThe last item in the stack is:");
-                Console.WriteLine(stack.Last.Value);
-            }
+
+            return flag;
         }
     }
+ 
 
     enum Actions
     {
